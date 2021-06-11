@@ -1,0 +1,17 @@
+main.c:14:6:SetSysClock	0	static
+main.c:22:6:SysTickEnable	0	static
+main.c:29:6:SysTickDisable	0	static
+main.c:34:6:Wait	4	static
+main.c:41:9:Division	0	static
+main.c:46:6:Convert_BME280_for_LCD	56	static
+main.c:76:6:Convert_DS3231_for_LCD	80	static
+main.c:106:6:Update_Data	48	static
+main.c:124:6:EXTI0_IRQHandler	8	static
+main.c:129:6:Toggle_LCD_LED	8	static
+main.c:134:6:Toggle_Cursor_Blink	8	static
+main.c:144:6:Change_Cursor_Pos	8	static
+main.c:169:9:DECtoBCD	0	static
+main.c:174:9:BCDtoDEC	0	static
+main.c:179:6:Change_Value	56	static
+main.c:225:6:TIM1_TRG_COM_IRQHandler	40	static,ignoring_inline_asm
+main.c:268:5:main	8	static,ignoring_inline_asm

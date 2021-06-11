@@ -1,0 +1,5 @@
+bme280.c:5:6:BME280_GetMeasurement	48	static
+bme280.c:78:9:BME280_getID	16	static
+bme280.c:88:6:BME280_GetStatus	16	static
+bme280.c:97:6:BME280_GetCalibData	64	static
+bme280.c:130:6:BME280_Init	16	static
