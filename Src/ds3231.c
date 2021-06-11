@@ -4,12 +4,14 @@
 
 void DS3231_Init()
 {
+  //инициализация часов реального времени
     uint8_t init[3] = {DS3231_CONTROL_ADDR,0x0,0x0};
     I2C_Write(DS3231_I2C_ADDR_WRITE, init, 3);
 }
 
 void DS3231_GetData(struct DS3231_calendar* cal)
 {
+  //Получение даты и времени из RTC
     uint8_t date[7] = {0};
     uint8_t addr = 0;
     I2C_Write(DS3231_I2C_ADDR_WRITE, &addr, 1);
@@ -26,6 +28,7 @@ void DS3231_GetData(struct DS3231_calendar* cal)
 
 void DS3231_SetData(struct DS3231_calendar* cal)
 {
+  //Записать дату и время в RTC
     uint8_t new_data[8] = {DS3231_SEC_ADDR,
 		      cal->second,
 		      cal->minute,

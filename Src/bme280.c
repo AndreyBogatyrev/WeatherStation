@@ -11,6 +11,7 @@ I2C_Read(BME280_I2C_ADDR_READ, data, 8U);
 
 struct bme280_uncomp_data uncomp_data = {(data[0]<<12 | data[1]<<4 | data[2]>>4),(data[3]<<12 | data[4]<<4 | data[5]>>4),(data[6]<<8 | data[7])};
 
+//Последующие расчеты предоставлены производителем датчика, можно найти в datasheet
 int32_t var1;
 int32_t var2;
 int32_t var3;
@@ -20,13 +21,28 @@ int32_t var5;
 uint32_t humidity;
 uint32_t pressure;
 int32_t temperature;
+int32_t temperature_min = -4000;
+int32_t temperature_max = 8500;
 
-//----------------------------------------temp------------------------------------------------------------
+//Для температуры
 
-temperature = (int32_t)(uncomp_data.temperature - 459200) * 2500 / 78011;
-calib_data->t_fine=(temperature<<9)/10;
+var1 = (int32_t)((uncomp_data.temperature / 8) - ((int32_t)calib_data->dig_t1 * 2));
+var1 = (var1 * ((int32_t)calib_data->dig_t2)) / 2048;
+var2 = (int32_t)((uncomp_data.temperature / 16) - ((int32_t)calib_data->dig_t1));
+var2 = (((var2 * var2) / 4096) * ((int32_t)calib_data->dig_t3)) / 16384;
+calib_data->t_fine = var1 + var2;
+temperature = (calib_data->t_fine * 5 + 128) / 256;
 
-//----------------------------------------press-----------------------------------------------------
+if (temperature < temperature_min)
+{
+    temperature = temperature_min;
+}
+else if (temperature > temperature_max)
+{
+    temperature = temperature_max;
+}
+
+//Для давления
 
 var1 = (((int32_t)calib_data->t_fine)>>1)-(int32_t)64000;
 var2 = (((var1>>2) * (var1>>2)) >> 11 ) * ((int32_t)calib_data->dig_p6);
@@ -77,6 +93,7 @@ meas->hum=(humidity>99?99:humidity);
 
 uint8_t BME280_getID(void)
 {
+    //Получение ID датчика, нужно для определения его типа
     uint8_t id=0;
     uint8_t addr = BME280_CHIP_ID_ADDR;
 
@@ -96,6 +113,7 @@ void BME280_GetStatus(void)
 
 void BME280_GetCalibData(struct bme280_calib_data* calib_data)
 {
+    //Получение информации и расчет компенсационных данных
     uint8_t calib_1[26]={0};
     uint8_t calib_2[7]={0};
     uint8_t addr = BME280_TPH_CALIB_ADDR;
@@ -128,6 +146,7 @@ void BME280_GetCalibData(struct bme280_calib_data* calib_data)
 }
 
 void BME280_Init(void){
+  //инициализация датчика
 uint8_t data[6] = {BME280_CONFIG_ADDR, BME280_T_STANDBY_1000 | BME280_FILTER_16,
 		BME280_CTRL_HUM_ADDR, BME280_H_OVERSAMPLING_1X, BME280_CTRL_MEAS_ADDR,
 		BME280_P_OVERSAMPLING_16X | BME280_T_OVERSAMPLING_16X | BME280_NORMAL_MODE};

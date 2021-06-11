@@ -1,4 +1,4 @@
-lcd.c:32:6:LCD_Write	24	static
+lcd.c:34:6:LCD_Write	24	static
 lcd.c:6:6:Print_DS3231	64	static
-lcd.c:20:6:Print_BME280	72	static
-lcd.c:39:6:LCD_Init	96	static
+lcd.c:21:6:Print_BME280	72	static
+lcd.c:42:6:LCD_Init	96	static

@@ -3,8 +3,9 @@
 
 void I2C_Init(void)
 {
+  //Инициализация I2C модуля к контроллере
     RCC->APB2ENR |= RCC_APB2ENR_IOPBEN | RCC_APB2ENR_AFIOEN;
-    GPIOB->CRL |= GPIO_CRL_CNF6 | GPIO_CRL_CNF7 | GPIO_CRL_MODE6_0 | GPIO_CRL_MODE7_0;//инициализация РВ6, РВ7 для I2C (Alternate function Open-drain)
+    GPIOB->CRL |= GPIO_CRL_CNF6 | GPIO_CRL_CNF7 | GPIO_CRL_MODE6_0 | GPIO_CRL_MODE7_0;
     RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
 
     I2C1->CR2 |= 0x8UL;
@@ -15,6 +16,7 @@ void I2C_Init(void)
 
 void I2C_Write(uint8_t addr, uint8_t* data, uint32_t num)
 {
+  //Передача информации от контроллера
     I2C1->CR1 |= I2C_CR1_ACK;
     I2C1->CR1 |= I2C_CR1_START;
 
@@ -42,6 +44,7 @@ void I2C_Write(uint8_t addr, uint8_t* data, uint32_t num)
 
 void I2C_Read(uint8_t addr, uint8_t* data, uint32_t num)
 {
+  //Передача информации в контроллер
     I2C1->CR1 |= I2C_CR1_ACK;
     I2C1->CR1 |= I2C_CR1_START;
 
